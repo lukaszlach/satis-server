@@ -1,0 +1,111 @@
+[
+  {
+    "id": "push",
+    "execute-command": "/satis-server/bin/satis-push.sh",
+    "command-working-directory": "/etc/satis",
+    "include-command-output-in-response": false,
+    "pass-arguments-to-command": [
+      {
+        "source": "payload",
+        "name": "repository.url"
+      }
+    ],
+    "pass-environment-to-command": [
+      {
+        "source": "url",
+        "name": "secret",
+        "envname": "REQUEST_PUSH_SECRET"
+      }
+    ]
+  },
+  {
+    "id": "build",
+    "execute-command": "/satis-server/bin/satis-build.sh",
+    "command-working-directory": "/etc/satis",
+    "include-command-output-in-response": true,
+    "pass-arguments-to-command": [
+      {
+        "source": "payload",
+        "name": "url"
+      }
+    ]
+  },
+  {
+    "id": "build-all",
+    "execute-command": "/satis-server/bin/satis-build-all.sh",
+    "command-working-directory": "/",
+    "include-command-output-in-response": true
+  },
+  {
+    "id": "add",
+    "execute-command": "/satis-server/bin/satis-add.sh",
+    "command-working-directory": "/etc/satis",
+    "include-command-output-in-response": true,
+    "pass-arguments-to-command": [
+      {
+        "source": "payload",
+        "name": "url"
+      }
+    ]
+  },
+  {
+    "id": "show",
+    "execute-command": "/satis-server/bin/satis-show.sh",
+    "command-working-directory": "/etc/satis",
+    "include-command-output-in-response": true,
+    "pass-arguments-to-command": [
+      {
+        "source": "payload",
+        "name": "url"
+      }
+    ]
+  },
+  {
+    "id": "remove",
+    "execute-command": "/satis-server/bin/satis-remove.sh",
+    "command-working-directory": "/etc/satis",
+    "include-command-output-in-response": true,
+    "pass-arguments-to-command": [
+      {
+        "source": "payload",
+        "name": "url"
+      }
+    ]
+  },
+  {
+    "id": "dump",
+    "execute-command": "/satis-server/bin/satis-dump.sh",
+    "command-working-directory": "/",
+    "include-command-output-in-response": true
+  },
+  {
+    "id": "list",
+    "execute-command": "/satis-server/bin/satis-list.sh",
+    "command-working-directory": "/",
+    "include-command-output-in-response": true
+  },
+  {
+    "id": "version",
+    "execute-command": "/satis-server/bin/scw-version.sh",
+    "command-working-directory": "/",
+    "include-command-output-in-response": true
+  },
+  {
+    "id": "help",
+    "execute-command": "/satis-server/bin/scw-help.sh",
+    "command-working-directory": "/",
+    "include-command-output-in-response": true,
+    "pass-arguments-to-command": [
+      {
+        "source": "string",
+        "name": "html"
+      }
+    ]
+  },
+  {
+    "id": "ping",
+    "execute-command": "/bin/true",
+    "command-working-directory": "/",
+    "include-command-output-in-response": false
+  }
+]

@@ -1,0 +1,14 @@
+.idea/
+.git/
+Makefile
+Dockerfile
+LICENCE.md
+.gitignore
+.dockerignore
+.gitlab-ci.yml
+test/
+etc/
+var/
+install
+*.example
+README.md

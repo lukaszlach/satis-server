@@ -1,0 +1,9 @@
+.idea/
+etc/
+var/
+test/*
+#!test/satis.json
+!test/test.sh
+bin/webhook
+README.html
+README.txt

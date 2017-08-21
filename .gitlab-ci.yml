@@ -1,0 +1,98 @@
+stages:
+  - build
+  - test_stage1
+  - test_stage2
+  - test_stage3
+  - release
+
+before_script:
+  - docker_login.sh
+  - docker login -u "$DOCKER_LOGIN" -p "$DOCKER_PASSWORD"
+  - docker stop satis_server || true
+  - docker rm satis_server || true
+
+build:docker:
+  stage: build
+  script:
+    - make BUILD_ID="`date +%Y%m%d`-`echo "${CI_COMMIT_SHA:0:8}"`"
+
+test:lint:
+  stage: test_stage1
+  before_script:
+  script:
+    - find bin -name "*.sh" -exec docker run --rm -v `pwd`:/srv -w /srv
+        koalaman/shellcheck --shell sh --color always -e SC2006,SC2016,SC2039,SC2145,SC1117,SC1091,SC2002 {} \;
+  dependencies:
+  allow_failure: true
+
+test:simple-run:
+  stage: test_stage1
+  script:
+    - make simple-run
+    - sleep 3
+    - docker logs satis_server
+    - docker exec satis_server ps aux
+    - docker exec satis_server sh -c 'cat /etc/nginx/conf.d/*'
+    - make test TEST_HOSTNAME="$RUNNER_HOSTNAME"
+    - make test-sh
+    - docker logs satis_server
+  dependencies:
+
+test:docker-compose:
+  stage: test_stage1
+  script:
+    - make docker-compose-run
+    - sleep 3
+    - docker logs satis_server
+    - docker exec satis_server ps aux
+    - docker exec satis_server env
+  dependencies:
+
+test:sh:
+  stage: test_stage2
+  script:
+    - make simple-run
+    - sleep 3
+    - make test-sh
+  dependencies:
+    - test:simple-run
+
+test:auto-install:
+  stage: test_stage2
+  script:
+    - curl -sS file://`pwd`/install | bash
+    # because of VOLUME
+    - docker exec satis_server mkdir -p /etc/satis-server/ssh
+    - echo -n "$RSA_PRIVATE_KEY" > /tmp/id_rsa
+    - echo -n "$RSA_PUBLIC_KEY" > /tmp/id_rsa.pub
+    - echo -n "$TEST_SATIS_SERVER_CONF" > /tmp/satis-server.conf
+    - docker cp /tmp/id_rsa satis_server:/etc/satis-server/ssh/id_rsa
+    - docker cp /tmp/id_rsa.pub satis_server:/etc/satis-server/ssh/id_rsa.pub
+    - docker cp /tmp/satis-server.conf satis_server:/etc/satis-server/satis-server.conf
+    - cp /tmp/satis-server.conf /etc/satis-server/satis-server.conf
+    - /usr/local/bin/satis-server-stop
+    - /usr/local/bin/satis-server-start
+    - docker ps
+    - docker exec satis_server env
+    - docker exec satis_server cat /etc/satis-server/satis-server.conf
+    - docker exec satis_server sh -c 'cat /etc/nginx/conf.d/*'
+    - docker exec satis_server ps aux
+    - docker exec satis_server ssh -v git@github.com || true
+    - docker logs satis_server
+    - make test TEST_HOSTNAME="$RUNNER_HOSTNAME"
+    - docker ps
+  dependencies:
+    - test:simple-run
+
+test:cleanup:
+  stage: test_stage3
+  script:
+    - /bin/true
+  when: manual
+
+release:docker:
+  stage: release
+  script:
+    - make BUILD_ID="`date +%Y%m%d`-`echo "${CI_COMMIT_SHA:0:8}"`"
+    - make push
+  when: manual

@@ -1,0 +1,18 @@
+version: "2.1"
+services:
+    satis-server:
+        image: lukaszlach/satis-server:latest
+        container_name: satis_server
+        restart: unless-stopped
+        ports:
+            - 8080:80
+            - 443:433
+        volumes:
+            - /etc/satis:/etc/satis
+            - /etc/satis-server:/etc/satis-server
+            - /var/satis-server:/var/satis-server
+        environment:
+            - SSL_PORT=443
+            - REBUILD_AT=1 0 * * *
+            - PUSH_SECRET=d5a7c0d0c897665588cd0844744e3109
+            - API_ALLOW=0.0.0.0/0
