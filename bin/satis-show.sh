@@ -11,7 +11,7 @@ PACKAGE_INFO=`cat /etc/satis/output/include/*.json | jq -r '.packages."'"$PACKAG
 PACKAGE_RELEASES=`echo "$PACKAGE_INFO" | jq -r 'keys | .[]' | tr '\n' ';' | sed -e 's/;/, /g' -e 's/, $//'`
 PACKAGE_DESCRIPTION=`echo "$PACKAGE_INFO" | jq -r '."dev-master".description | select (.!=null)'`
 PACKAGE_HOMEPAGE=`echo "$PACKAGE_INFO" | jq -r '."dev-master".homepage | select (.!=null)'`
-PACKAGE_AUTHORS=`echo "$PACKAGE_INFO" | jq -r '."dev-master".authors | .[].name' | tr '\n' ';' | sed -e 's/;/, /g' -e 's/, $//'`
+PACKAGE_AUTHORS=`echo "$PACKAGE_INFO" | jq -r '."dev-master".authors | .[].name' 2>/dev/null | tr '\n' ';' | sed -e 's/;/, /g' -e 's/, $//'`
 
 echo "Package: $PACKAGE_NAME"
 echo "Description: $PACKAGE_DESCRIPTION"
