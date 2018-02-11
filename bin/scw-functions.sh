@@ -57,7 +57,8 @@ scw_get_repository_name() {
     fi
 }
 scw_satis_verify_repository_exists() {
-    if [ "`cat /etc/satis/satis.json | jq '.repositories[] | select(.url == "'"$1"'") | .url' | wc -c`" == "0" ]; then
+    REPOSITORY_NAME=`scw_get_repository_name "$1"`
+    if [ "`cat /etc/satis/satis.json | jq '.repositories[] | select(.url | contains("'"$REPOSITORY_NAME"'")) | .url' | wc -c`" == "0" ]; then
         scw_log_error "Repository $1 does not exist in this Satis repository"
         exit 0
     fi
