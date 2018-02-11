@@ -119,7 +119,7 @@ set -e
 (
     if [ -f /etc/satis-server/https/cert.pem ] && [ -f /etc/satis-server/https/key.pem ]; then
         TMP_DIR=\$(mktemp -d)
-        cp -f $ETC_DIR/* "\$TMP_DIR"
+        cp -rf $ETC_DIR/* "\$TMP_DIR"
         cd "\$TMP_DIR"
         sed 's/^#ssl//' $ETC_DIR/docker-compose.yml > docker-compose.yml
     else

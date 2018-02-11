@@ -1,6 +1,6 @@
 # lukaszlach / satis-server
 
-![Version](https://img.shields.io/badge/version-1.0-lightgrey.svg?style=flat)
+![Version](https://img.shields.io/badge/version-1.1-lightgrey.svg?style=flat)
 [![Docker pulls](https://img.shields.io/docker/pulls/lukaszlach/satis-server.svg?label=docker+pulls)](https://hub.docker.com/r/lukaszlach/satis-server)
 [![Docker stars](https://img.shields.io/docker/stars/lukaszlach/satis-server.svg?label=docker+stars)](https://hub.docker.com/r/lukaszlach/satis-server)
 
@@ -22,7 +22,7 @@
 Use automated install script, that pulls Docker image, creates directory structure and configuration files and installs start/stop commands for you, by executing below command. If you prefer to do it manually - proceed with [usage instructions](#running), as Docker image will download automatically on first usage.
 
 ```bash
-export SATIS_SERVER_VERSION=1.0
+export SATIS_SERVER_VERSION=1.1
 curl -L "https://raw.githubusercontent.com/lukaszlach/satis-server/$SATIS_SERVER_VERSION/install" | bash
 ```
 

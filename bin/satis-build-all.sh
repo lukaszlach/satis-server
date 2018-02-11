@@ -4,7 +4,7 @@ if [ "$1" == "" ]; then
     set -- --ansi -n -vv
 fi
 /satis-server/bin/notify.sh "Starting full repository rebuild" "gray"
-satis build "$@" /etc/satis/satis.json /etc/satis/output 2>&1
+scw_wait satis build "$@" /etc/satis/satis.json /etc/satis/output 2>&1
 EXIT_CODE="$?"
 scw_log "Exit code: $EXIT_CODE"
 if [ "$EXIT_CODE" == "0" ]; then

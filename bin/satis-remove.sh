@@ -6,6 +6,8 @@ if [ "$1" == "" ]; then
 fi
 REPOSITORY_URL="$1"
 scw_satis_verify_repository_exists "$REPOSITORY_URL"
+# wait for other operations on repository to end
+scw_wait /bin/true
 
 SATIS_JSON=`cat /etc/satis/satis.json | jq '.repositories[] |= del(select(.url == "'"$REPOSITORY_URL"'")) | del(.repositories[] | select(. == null))'`
 echo "$SATIS_JSON" > /etc/satis/satis.json

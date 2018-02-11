@@ -12,7 +12,7 @@ if [ "$1" == "" ]; then
     set -- --ansi -n -vv
 fi
 /satis-server/bin/notify.sh "Starting to build <b>$PACKAGE_NAME</b>" "gray"
-satis build --repository-url="$REPOSITORY_URL" "$@" /etc/satis/satis.json /etc/satis/output 2>&1
+scw_wait satis build --repository-url="$REPOSITORY_URL" "$@" /etc/satis/satis.json /etc/satis/output 2>&1
 EXIT_CODE="$?"
 scw_log "Exit code: $EXIT_CODE"
 if [ "$EXIT_CODE" == "0" ]; then

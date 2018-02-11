@@ -9,5 +9,5 @@ shift
 if [ "$1" == "" ]; then
     set -- --ansi -n -vv
 fi
-satis add "$@" "$REPOSITORY_URL" /etc/satis/satis.json 2>&1
+scw_wait satis add "$@" "$REPOSITORY_URL" /etc/satis/satis.json 2>&1
 scw_log "Exit code: $?"
