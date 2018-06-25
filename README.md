@@ -152,7 +152,6 @@ Since Satis repository files can be found under `/` URL path, Satis API endpoint
 PUSH events handler, returns immediately and does not wait for build to finish.
 
 ```
-$ curl -sS -d'url=https://github.com/php-amqplib/php-amqplib' http://your-server:8080/api/push
 $ curl -sS -d'{"repository":{"url":"https://github.com/php-amqplib/php-amqplib"}}' -H'Content-Type: application/json' http://your-server:8080/api/push
 ```
 
