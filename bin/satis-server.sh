@@ -9,6 +9,9 @@ cp -fr /satis-server/nginx/* /etc/nginx/
 if [ -f /etc/satis-server/https/cert.pem ] && [ -f /etc/satis-server/https/key.pem ]; then
     sed 's/^#ssl//g; s/$SSL_PORT/'"$SSL_PORT"'/g' -i /etc/nginx/conf.d/*.conf
 fi
+if [ -f /etc/satis-server/htpasswd ]; then
+    sed 's/^#auth//g' -i /etc/nginx/conf.d/*.conf
+fi
 if echo -n "$PROXY_IP" | grep -E "(\d{1,3}\.)+\d{1,3}/\d{1,2}" > /dev/null; then
 	sed 's/^#proxy //g; s#$PROXY_IP#'"$PROXY_IP"'#g' -i /etc/nginx/conf.d/*.conf
 fi
