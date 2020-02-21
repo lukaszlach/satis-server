@@ -25,7 +25,7 @@ LABEL maintainer="Łukasz Lach <llach@llach.pl>" \
 ENV SATIS_SERVER_VERSION ${SATIS_SERVER_VERSION:-dev-master}
 WORKDIR /satis-server
 
-RUN apk -U add jq nginx && \
+RUN apk -U add jq nginx tini && \
     rm -rf /var/cache/apk/* /etc/nginx/conf.d/* && \
     echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config && \
     mkdir -p /root/.ssh/satis-server /etc/webhook
