@@ -9,7 +9,7 @@ cp -fr /satis-server/nginx/* /etc/nginx/
 if [ -f /etc/satis-server/https/cert.pem ] && [ -f /etc/satis-server/https/key.pem ]; then
     sed 's/^#ssl//g; s/$SSL_PORT/'"$SSL_PORT"'/g' -i /etc/nginx/conf.d/*.conf
 fi
-if echo -n "$API_ALLOW" | grep -E "(\d\.)+\d/\d+" > /dev/null; then
+if echo -n "$API_ALLOW" | grep -E "(\d{1,3}\.)+\d{1,3}/\d{1,2}" > /dev/null; then
     sed 's/^#allow//g; s#$API_ALLOW#'"$API_ALLOW"'#g' -i /etc/nginx/conf.d/*.conf
 fi
 if [ ! -z "$PUSH_SECRET" ]; then
